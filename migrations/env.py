@@ -7,7 +7,9 @@ from sqlalchemy.ext.asyncio import async_engine_from_config
 
 from alembic import context
 
-from app.post.model import post, metadata
+from app.post.model import post
+from app.comment.model import comment
+from app.db import metadata
 from app.db import DATABASE_URL
 
 

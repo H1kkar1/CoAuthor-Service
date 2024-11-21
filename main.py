@@ -1,7 +1,6 @@
-from bestconfig import Config
 from fastapi import FastAPI
-
-
-conf = Config('.env')
+from app.post.router import post_router
 
 app = FastAPI()
+
+app.include_router(post_router)
