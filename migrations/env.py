@@ -8,20 +8,20 @@ from sqlalchemy.ext.asyncio import async_engine_from_config
 from alembic import context
 
 from app.post.model import post
-from app.comment.model import comment
-from app.db import metadata
-from app.db import DATABASE_URL
+from app.comment.model import comment, chat
+from app.db import db_helper
+from app.config import settings
 
 
 config = context.config
-config.set_main_option("sqlalchemy.url", DATABASE_URL)
+config.set_main_option("sqlalchemy.url", settings.db.url)
 
 
 if config.config_file_name is not None:
     fileConfig(config.config_file_name)
 
 
-target_metadata = metadata
+target_metadata = db_helper.mapper_registry.metadata
 
 
 def run_migrations_offline() -> None:

@@ -1,56 +1,48 @@
-from typing import Annotated, Dict
-from fastapi import APIRouter, Form
-from app.db import SessionDep
+from sqlalchemy import select
+from typing import Annotated, Sequence
+from fastapi import APIRouter, Depends
+from sqlalchemy.ext.asyncio import AsyncSession
+
+from app.db import db_helper
 from app.post.model import Post
-from app.comment.model import Chat
-from sqlalchemy import select, Uuid
-from sqlalchemy.engine import Result
-import uuid
+
+from app.post.schema import PostRead, PostWrite
 
 
-post_router = APIRouter()
+import app.post.service as service
+
+post_router = APIRouter(
+    prefix="/coauthor",
+    tags=["CoAutor"],
+)
 
 
-@post_router.get("/coauthor", response_model=None)
+@post_router.get(path="")
 async def get_all_posts(
-        session: SessionDep,
-        page: int,
-) -> list[Post]:
-    query = select(Post)
-    result: Result = await session.execute(query)
-    posts = result.scalars().all()
-    return list(posts)
+        session: AsyncSession = Depends(db_helper.sessionDep)
+):
+    result = await service.get_all_posts(session)
+    return result
 
 
-@post_router.get("/coauthor/post/{id}", response_model=None)
-async def get_post(
-        session: SessionDep,
-        id: Uuid,
-) -> Post | None:
-    return session.get(Post, id)
+# @post_router.get("/post/{id}")
+# async def get_post(
+#         session: Annotated[
+#             AsyncSession,
+#             Depends(db_helper.sessionDep)
+#         ],
+#         id: Uuid,
+# ) -> Post | None:
+#     return session.get(SqlPost, id)
 
 
-@post_router.post("/coauthor/create_post", response_model=None)
+@post_router.post("", response_model=PostRead)
 async def create_post(
-        title: Annotated[str, Form()],
-        description: Annotated[str, Form()],
-        seeker: Annotated[str, Form()],
-        team: Annotated[str, Form()],
-        contacts:  Annotated[list, Form()],
-        session: SessionDep,
-) -> dict[str, str]:
-    id = uuid.uuid4().hex
-    post = Post(
-        id=id,
-        title=title,
-        description=description,
-        seeker=seeker,
-        team=team,
-        contacts=contacts
+        post: PostWrite,
+        session: AsyncSession = Depends(db_helper.sessionDep),
+):
+    result = await service.create_post(
+        session=session,
+        post_create=post
     )
-    chat = Chat(id=id)
-
-    await session.add(chat, post)
-    await session.commit()
-
-    return {"Post id": id}
+    return result

@@ -1,10 +1,29 @@
-from pydantic import BaseModel
+from pydantic import BaseModel, UUID4
+from typing import Optional
 
 
-class Post(BaseModel):
-    id: str
+class PostBase(BaseModel):
+    """
+        Модель данных для API
+
+        - id: str | ID Поста для поиска со-авторов
+        - title: str | Название поста
+        - description: str | Основной текст поста
+        - seeker: str | Человек который ищет со-автора
+        - team: str | Команда которая ищет со-автора
+        - contacts: str | Контактные данные для связи
+    """
     title: str
     description: str
-    seeker: str
-    team: str
+    seeker: Optional[UUID4]
+    team: Optional[UUID4]
     contacts: str
+
+
+class PostRead(PostBase):
+    id: UUID4
+    chat_id: UUID4
+
+
+class PostWrite(PostBase):
+    pass
