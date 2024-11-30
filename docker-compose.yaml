@@ -10,10 +10,10 @@ services:
     volumes:
       - .:/app
     networks:
-      - "webapi"
+      - webapi
     depends_on:
       - db
-    command: ['python3  main.py; alembic upgrade head']
+    command: sh -c "alembic upgrade head && python3 main.py"
 
   db:
     image:  postgres:17-alpine
@@ -23,14 +23,14 @@ services:
       POSTGRES_PASSWORD: 1234
       POSTGRES_DB: post
       PGDATA: /var/lib/postgresql/data/pgdata
-
+    networks:
+      - webapi
     ports:
       - "5432:5432"
     volumes:
       - ./pgdata:/var/lib/postgresql/data/pgdata
-    networks:
-      - "webapi"
     restart: always
+
 
 networks:
   webapi:
