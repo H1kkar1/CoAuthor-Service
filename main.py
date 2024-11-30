@@ -2,6 +2,7 @@ import uvicorn
 from fastapi import FastAPI
 from fastapi.openapi.docs import get_swagger_ui_html, get_swagger_ui_oauth2_redirect_html, get_redoc_html
 
+from app.db import db_helper
 from app.post.router import post_router
 from app.config import settings
 
@@ -42,3 +43,4 @@ async def redoc_html():
         title=app.title + " - ReDoc",
         redoc_js_url="https://unpkg.com/redoc@next/bundles/redoc.standalone.js",
     )
+

@@ -1,6 +1,7 @@
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.ext.asyncio import AsyncSession, AsyncEngine
 from sqlalchemy.ext.asyncio import create_async_engine, async_sessionmaker
+from sqlalchemy import MetaData
 from fastapi import Depends
 from typing import Annotated, AsyncGenerator
 from sqlalchemy.orm import registry
@@ -32,7 +33,7 @@ class DbHelper:
         self.Base = declarative_base()
         self.sessionDep = self.get_session
         self.mapper_registry = registry()
-
+        self.metadata_obj = MetaData()
         # Dependency
 
     async def get_session(self) -> AsyncGenerator[AsyncSession, None]:
@@ -47,3 +48,4 @@ db_helper = DbHelper(
     pool_size=settings.db.pool_size,
     max_overflow=settings.db.max_overflow,
 )
+print(db_helper.engine.url)

@@ -1,0 +1,37 @@
+version: "3.8"
+
+services:
+
+  app:
+    build:
+      dockerfile: Dockerfile
+    ports:
+      - "8000:8000"
+    volumes:
+      - .:/app
+    networks:
+      - "webapi"
+    depends_on:
+      - db
+    command: ['python3  main.py; alembic upgrade head']
+
+  db:
+    image:  postgres:17-alpine
+
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: 1234
+      POSTGRES_DB: post
+      PGDATA: /var/lib/postgresql/data/pgdata
+
+    ports:
+      - "5432:5432"
+    volumes:
+      - ./pgdata:/var/lib/postgresql/data/pgdata
+    networks:
+      - "webapi"
+    restart: always
+
+networks:
+  webapi:
+    driver: bridge
