@@ -13,7 +13,7 @@ class DbSettings(BaseModel):
 
 
 class RunSettings(BaseModel):
-    host: str = "0.0.0.0"
+    host: str = "localhost"
     port: int = 8000
     reload: bool = True
 

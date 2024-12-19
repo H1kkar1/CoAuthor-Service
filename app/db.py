@@ -48,4 +48,3 @@ db_helper = DbHelper(
     pool_size=settings.db.pool_size,
     max_overflow=settings.db.max_overflow,
 )
-print(db_helper.engine.url)

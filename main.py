@@ -2,13 +2,15 @@ import uvicorn
 from fastapi import FastAPI
 from fastapi.openapi.docs import get_swagger_ui_html, get_swagger_ui_oauth2_redirect_html, get_redoc_html
 
+from app.comment.router import comment_router
 from app.db import db_helper
 from app.post.router import post_router
 from app.config import settings
 
 
-app = FastAPI(docs_url=None, redoc_url=None)
+app = FastAPI()
 app.include_router(post_router)
+app.include_router(comment_router)
 
 
 if __name__ == "__main__":
@@ -20,27 +22,29 @@ if __name__ == "__main__":
     )
 
 
-@app.get("/docs", include_in_schema=False)
-async def custom_swagger_ui_html():
-    return get_swagger_ui_html(
-        openapi_url=app.openapi_url,
-        title=app.title + " - Swagger UI",
-        oauth2_redirect_url=app.swagger_ui_oauth2_redirect_url,
-        swagger_js_url="https://unpkg.com/swagger-ui-dist@5/swagger-ui-bundle.js",
-        swagger_css_url="https://unpkg.com/swagger-ui-dist@5/swagger-ui.css",
-    )
+# На случай если свагер откажется жить
 
-
-@app.get(app.swagger_ui_oauth2_redirect_url, include_in_schema=False)
-async def swagger_ui_redirect():
-    return get_swagger_ui_oauth2_redirect_html()
-
-
-@app.get("/redoc", include_in_schema=False)
-async def redoc_html():
-    return get_redoc_html(
-        openapi_url=app.openapi_url,
-        title=app.title + " - ReDoc",
-        redoc_js_url="https://unpkg.com/redoc@next/bundles/redoc.standalone.js",
-    )
-
+# @app.get("/docs", include_in_schema=False)
+# async def custom_swagger_ui_html():
+#     return get_swagger_ui_html(
+#         openapi_url=app.openapi_url,
+#         title=app.title + " - Swagger UI",
+#         oauth2_redirect_url=app.swagger_ui_oauth2_redirect_url,
+#         swagger_js_url="https://unpkg.com/swagger-ui-dist@5/swagger-ui-bundle.js",
+#         swagger_css_url="https://unpkg.com/swagger-ui-dist@5/swagger-ui.css",
+#     )
+#
+#
+# @app.get(app.swagger_ui_oauth2_redirect_url, include_in_schema=False)
+# async def swagger_ui_redirect():
+#     return get_swagger_ui_oauth2_redirect_html()
+#
+#
+# @app.get("/redoc", include_in_schema=False)
+# async def redoc_html():
+#     return get_redoc_html(
+#         openapi_url=app.openapi_url,
+#         title=app.title + " - ReDoc",
+#         redoc_js_url="https://unpkg.com/redoc@next/bundles/redoc.standalone.js",
+#     )
+#

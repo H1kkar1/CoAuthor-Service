@@ -13,15 +13,16 @@ class CommentBase(BaseModel):
         - text: str | Текст сообщения
         - grade: int | Оценки поста (лайки )
     """
-    id: UUID4
+    id: int
     chat_id: UUID4
     user_id: UUID4
-    text: str
+    description: str
     grade: int
 
 
-class CommentWrite(CommentBase):
-    id: Optional[UUID4]
+class CommentUpdate(BaseModel):
+    id: int
+    description: str
 
 
 class ChatBase(BaseModel):

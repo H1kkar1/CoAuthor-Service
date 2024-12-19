@@ -22,7 +22,13 @@ class PostBase(BaseModel):
 
 class PostRead(PostBase):
     id: UUID4
-    chat_id: UUID4
+    comments: UUID4
+
+
+class PostUpdate(BaseModel):
+    id: UUID4
+    description: Optional[str]
+    contacts: Optional[str]
 
 
 class PostWrite(PostBase):

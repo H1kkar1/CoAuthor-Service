@@ -5,9 +5,9 @@ comment = Table(
     'comment',
     db_helper.metadata_obj,
     Column('id', Integer, primary_key=True, nullable=False),
-    Column('chat_id', Uuid, ForeignKey("chat.id"), nullable=False),
+    Column('chat_id', Uuid, ForeignKey("chat.id", ondelete='CASCADE'), nullable=False),
     Column('user_id', Uuid, nullable=False),
-    Column('text', String(4096), nullable=False),
+    Column('description', String(4096), nullable=False),
     Column('grade', Integer, nullable=False, default=0),
 )
 

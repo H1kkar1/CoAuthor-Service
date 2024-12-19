@@ -9,9 +9,9 @@ from alembic import context
 
 from app.config import settings
 from app.db import db_helper
+from app.comment.model import comment, chat
+from app.post.model import post
 
-# this is the Alembic Config object, which provides
-# access to the values within the .ini file in use.
 config = context.config
 config.set_main_option("sqlalchemy.url", str(settings.db.url))
 # Interpret the config file for Python logging.

@@ -11,7 +11,7 @@ post = Table(
     Column('seeker', Uuid, nullable=False),
     Column('team', Uuid, nullable=True),
     Column('contacts', String(), nullable=True),
-    Column('comments', Uuid, ForeignKey("chat.id"), nullable=True),
+    Column('comments', Uuid, ForeignKey("chat.id", ondelete='CASCADE'), nullable=True),
 )
 
 
