@@ -6,11 +6,13 @@ from app.comment.router import comment_router
 from app.db import db_helper
 from app.post.router import post_router
 from app.config import settings
+from app.auth_reg.routes import auth_reg_router
 
 
 app = FastAPI()
 app.include_router(post_router)
 app.include_router(comment_router)
+app.include_router(auth_reg_router, prefix="/auth")
 
 
 if __name__ == "__main__":
