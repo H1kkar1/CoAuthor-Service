@@ -6,9 +6,12 @@ from app.services import UserService
 from app.database import get_session
 from app.models import User
 
-router = APIRouter()
+auth_reg_router = APIRouter(
+    prefix="/auth",
+    tags=["Auth"],
+)
 
-@router.post("/register", response_model=UserOut)
+@auth_reg_router.post("/register", response_model=UserOut)
 async def register(user: UserCreate, db: AsyncSession = Depends(get_session)):
     result = await db.execute(select(User).filter(User.username == user.username))
     existing_user = result.scalar_one_or_none()
@@ -18,7 +21,7 @@ async def register(user: UserCreate, db: AsyncSession = Depends(get_session)):
     db_user = await UserService.register(db, user) # Регистрация нового пользователя
     return db_user
 
-@router.post("/login")
+@auth_reg_router.post("/login")
 async def login(user: UserLogin, db: AsyncSession = Depends(get_session)):
     db_user = await UserService.login(db, user)
     if db_user:
