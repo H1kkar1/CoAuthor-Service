@@ -7,12 +7,16 @@ from app.db import db_helper
 from app.post.router import post_router
 from app.config import settings
 from app.auth_reg.routes import auth_reg_router
+from app.chapters.routers import chapter_router
+from app.ranobe.routers import router as ranobe_router
 
 
 app = FastAPI()
 app.include_router(post_router)
 app.include_router(comment_router)
 app.include_router(auth_reg_router)
+app.include_router(chapter_router)
+app.include_router(ranobe_router)
 
 
 if __name__ == "__main__":

@@ -1,8 +1,8 @@
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy.future import select
 from werkzeug.security import generate_password_hash, check_password_hash
-from app.models import User
-from app.schemas import UserCreate, UserLogin
+from auth_reg.models import User
+from auth_reg.schemas import UserCreate, UserLogin
 
 class UserService:
     """Сервис для работы с пользователями"""

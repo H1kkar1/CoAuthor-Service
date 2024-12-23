@@ -1,7 +1,7 @@
 from sqlalchemy import Column, Integer, String, Table
 from app.db import db_helper
 
-Users = Table(
+users = Table(
     'users',
     db_helper.metadata_obj,
     Column('id', Integer, primary_key=True, index=True),
